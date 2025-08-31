@@ -1,9 +1,11 @@
 package pages;
 
 import annotations.Path;
+import exceptions.CourseNotFoundException;
+import exceptions.LocatorNotFoundException;
+import exceptions.OpenedCourseNotFoundException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -44,7 +46,7 @@ public class CoursesPage extends AbsBasePage {
     public void clickOnCourseByName(String courseName) {
         // Проверяем, что элементы есть
         if (courseLinks.isEmpty() || coursesNames.isEmpty()) {
-            throw new RuntimeException("❌ Локатор не нашёл элементов! Проверьте @FindBy для courseLinks или coursesNames");
+            throw new LocatorNotFoundException("courseLinks или coursesNames");
         }
 
         // Нормализуем название для поиска
@@ -57,8 +59,7 @@ public class CoursesPage extends AbsBasePage {
                 return;
             }
         }
-
-        throw new RuntimeException("❌ Курс не найден: " + courseName);
+        throw new CourseNotFoundException(courseName);
     }
 
     // Общий метод для поиска курсов по дате
@@ -74,7 +75,7 @@ public class CoursesPage extends AbsBasePage {
                 .reduce((d1, d2) -> earliest ? (d1.isBefore(d2) ? d1 : d2) : (d1.isAfter(d2) ? d1 : d2));
 
         if (targetDateOpt.isEmpty()) {
-            return List.of();
+            throw new LocatorNotFoundException("coursesDates");
         }
         LocalDate targetDate = targetDateOpt.get();
 
@@ -105,11 +106,12 @@ public class CoursesPage extends AbsBasePage {
         return coursesList.stream()
                 .filter(course -> course.getText().equalsIgnoreCase(courseName))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Opened course not found: " + courseName));
+                .orElseThrow(() -> new OpenedCourseNotFoundException(courseName));
     }
 
     // Проверка, выбран ли курс
     public boolean isCourseSelected(WebElement webElement) {
         return "true".equals(getElementAttribute(webElement, "value"));
     }
+
 }

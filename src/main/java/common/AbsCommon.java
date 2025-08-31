@@ -9,7 +9,7 @@ import utils.WaitUtils;
 
 import javax.swing.*;
 
-public abstract class AbsCommon<T extends AbsCommon> {
+public abstract class AbsCommon<T extends AbsCommon<T>> {
     protected ActionUtils actionUtils;
     protected WebDriver driver;
     protected WaitUtils waitUtils;
@@ -20,6 +20,7 @@ public abstract class AbsCommon<T extends AbsCommon> {
         this.actionUtils = new ActionUtils(driver);
         PageFactory.initElements(driver, this);//реализациа фабрики
     }
+    @SuppressWarnings("unchecked")
     protected T clickOnElement(WebElement element) {
         element.click();
         return (T) this;

@@ -1,4 +1,4 @@
-package exeptions;
+package exceptions;
 
 import static java.lang.String.format;
 

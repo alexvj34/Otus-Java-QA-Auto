@@ -27,7 +27,6 @@ public class GuicePagesModule extends AbstractModule {
     public MainPage getMainPage() {
         return new MainPage(driver);
     }
-
     @Provides
     @Singleton
     public CoursesPage getCoursesPage() {

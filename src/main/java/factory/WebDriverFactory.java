@@ -1,6 +1,6 @@
 package factory;
 
-import exeptions.BrowserNotSupportedException;
+import exceptions.BrowserNotSupportedException;
 import factory.settings.ChromeSettings;
 import factory.settings.FirefoxSettings;
 import factory.settings.IBrowserSettings;

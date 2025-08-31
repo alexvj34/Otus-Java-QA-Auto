@@ -1,4 +1,4 @@
-package extencions;
+package extensions;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -13,7 +13,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.Augmenter;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +54,7 @@ public class UIExtension  implements BeforeEachCallback, AfterEachCallback {
         }
     }
 
-    public void takeScreenshot(WebDriver driver, String testName) {
+    private void takeScreenshot(WebDriver driver, String testName) {
         try {
             // Делаем скриншот
             File source = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);

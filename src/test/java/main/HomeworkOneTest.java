@@ -3,7 +3,7 @@ package main;
 import com.google.inject.Inject;
 import components.HeaderComponent;
 import components.TrainingComponent;
-import extencions.UIExtension;
+import extensions.UIExtension;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;

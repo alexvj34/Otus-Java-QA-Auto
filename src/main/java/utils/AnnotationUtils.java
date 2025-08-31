@@ -1,6 +1,6 @@
 package utils;
 
-import exeptions.PathIsMissingException;
+import exceptions.PathIsMissingException;
 
 import java.lang.annotation.Annotation;
 
