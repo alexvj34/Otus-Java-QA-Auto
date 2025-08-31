@@ -13,7 +13,7 @@ public abstract class AbsBaseComponent extends AbsCommon {
     }
 
     public void verifyComponentLoaded() {
-        waitUtils.waitTillElementVisible(driver.findElement(getComponentSelector()));
+        waitUtils.waitTillElementVisible(getComponentSelector());
     }
 
     public By getComponentSelector() {

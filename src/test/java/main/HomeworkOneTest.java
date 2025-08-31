@@ -5,6 +5,9 @@ import components.HeaderComponent;
 import components.TrainingComponent;
 import extencions.UIExtension;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebElement;
@@ -36,6 +39,13 @@ public class HomeworkOneTest {
     @Inject
     private MainPage mainPage;
 
+    @DisplayName("Сценарий 1")
+    @Tags({
+            @Tag("Открыть страницу каталога курсов https://otus.ru/catalog/courses"),
+            @Tag("Найти курс по имени (имя курса должно передаваться как данные в тесте)"),
+            @Tag("Кликнуть по плитке курса и проверить, что открыта страница верного курса"),
+            @Tag("Для поиска курса по имени обязательно необходимо использовать stream api.")
+    })
     @Test
     public void coursePageVerification() {
         coursesPage.openPage();
@@ -46,6 +56,13 @@ public class HomeworkOneTest {
                 .isTrue();
     }
 
+    @DisplayName("Сценарий 2")
+    @Tags({
+            @Tag("Открыть страницу каталога курсов https://otus.ru/catalog/courses"),
+            @Tag("Найти курсы, которые стартуют раньше и позже всех. Если даты совпадают, то выбрать все курсы, у которых дата совпадает."),
+            @Tag("Проверить, что на карточке самого раннего/позднего курсов отображается верное название курса и дата его начала"),
+            @Tag("Для поиска таких курсов необходимо использовать stream api и reduce. Также для проверки данных на странице карточки курса необходимо использовать jsoup.")
+    })
     @Test
     public void earliestAndLatestCoursesVerification() {
         coursesPage.openPage();
@@ -62,7 +79,12 @@ public class HomeworkOneTest {
                         .isTrue());
         softly.assertAll();
     }
-
+    @DisplayName("Сценарий 3")
+    @Tags({
+            @Tag("Открыть главную страницу https://otus.ru"),
+            @Tag("В заголовке страницы открыть меню «Обучение» и выбрать случайную категорию курсов"),
+            @Tag("Проверить, что открыт каталог курсов верной категории")
+    })
     @Test
     public void selectedCourseVerification() {
         mainPage.openPage();
