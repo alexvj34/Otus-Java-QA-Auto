@@ -36,20 +36,17 @@ public class CoursesPage extends AbsBasePage {
         super(driver);
     }
 
-    // Случайный курс
     public String getRandomCourseName() {
         int index = (int) (Math.random() * coursesNames.size());
         return coursesNames.get(index).getText();
     }
 
-    // Клик по курсу по имени
     public void clickOnCourseByName(String courseName) {
         // Проверяем, что элементы есть
         if (courseLinks.isEmpty() || coursesNames.isEmpty()) {
             throw new LocatorNotFoundException("courseLinks или coursesNames");
         }
 
-        // Нормализуем название для поиска
         String normalizedCourseName = courseName.trim().replaceAll("\\s+", " ").toLowerCase();
 
         for (int i = 0; i < coursesNames.size(); i++) {
@@ -62,13 +59,11 @@ public class CoursesPage extends AbsBasePage {
         throw new CourseNotFoundException(courseName);
     }
 
-    // Общий метод для поиска курсов по дате
     private List<WebElement> getCoursesByDate(boolean earliest) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM, yyyy", new Locale("ru"));
 
         Optional<LocalDate> targetDateOpt = coursesDates.stream()
                 .map(course -> {
-                    // Отделяем только часть с датой
                     String text = course.getText().trim().split("·")[0].trim();
                     return LocalDate.parse(text, formatter);
                 })
@@ -95,13 +90,11 @@ public class CoursesPage extends AbsBasePage {
         return getCoursesByDate(false);
     }
 
-    // Проверка, что курс есть на странице
     public boolean isCourseModelInPage(WebElement courseDate) {
         Document doc = Jsoup.parse(driver.getPageSource());
         return doc.selectFirst(String.format("div:contains(%s)", courseDate.getText().trim())) != null;
     }
 
-    // Получение вебэлемента открытого курса по имени
     public WebElement getOpenedCourseByName(String courseName) {
         return coursesList.stream()
                 .filter(course -> course.getText().equalsIgnoreCase(courseName))
@@ -109,9 +102,7 @@ public class CoursesPage extends AbsBasePage {
                 .orElseThrow(() -> new OpenedCourseNotFoundException(courseName));
     }
 
-    // Проверка, выбран ли курс
     public boolean isCourseSelected(WebElement webElement) {
         return "true".equals(getElementAttribute(webElement, "value"));
     }
-
 }

@@ -41,10 +41,10 @@ public class HomeworkOneTest {
 
     @DisplayName("Сценарий 1")
     @Tags({
-            @Tag("Открыть страницу каталога курсов https://otus.ru/catalog/courses"),
-            @Tag("Найти курс по имени (имя курса должно передаваться как данные в тесте)"),
-            @Tag("Кликнуть по плитке курса и проверить, что открыта страница верного курса"),
-            @Tag("Для поиска курса по имени обязательно необходимо использовать stream api.")
+            @Tag("Regress"),
+            @Tag("UI"),
+            @Tag("Smoke"),
+            @Tag("Otus")
     })
     @Test
     public void coursePageVerification() {
@@ -52,16 +52,16 @@ public class HomeworkOneTest {
         String randomCourseName = coursesPage.getRandomCourseName();
         coursesPage.clickOnCourseByName(randomCourseName);
         assertThat(coursePage.isSelectedCoursePageOpened(randomCourseName))
-                .as("Check that course page for '%s' is opened" + randomCourseName)
+                .as("Проверка, страница курса '%s' открыта" + randomCourseName)
                 .isTrue();
     }
 
     @DisplayName("Сценарий 2")
     @Tags({
-            @Tag("Открыть страницу каталога курсов https://otus.ru/catalog/courses"),
-            @Tag("Найти курсы, которые стартуют раньше и позже всех. Если даты совпадают, то выбрать все курсы, у которых дата совпадает."),
-            @Tag("Проверить, что на карточке самого раннего/позднего курсов отображается верное название курса и дата его начала"),
-            @Tag("Для поиска таких курсов необходимо использовать stream api и reduce. Также для проверки данных на странице карточки курса необходимо использовать jsoup.")
+            @Tag("Regress"),
+            @Tag("Smoke"),
+            @Tag("UI"),
+            @Tag("Otus")
     })
     @Test
     public void earliestAndLatestCoursesVerification() {
@@ -71,19 +71,21 @@ public class HomeworkOneTest {
 
         earliestCourses.forEach(course ->
                 softly.assertThat(coursesPage.isCourseModelInPage(course))
-                        .as("Earliest course should be present in the page: " + course.getText())
+                        .as("Самый ранний курс должен быть представлен на странице: " + course.getText())
                         .isTrue());
         latestCourses.forEach(course ->
                 softly.assertThat(coursesPage.isCourseModelInPage(course))
-                        .as("Latest course should be present in the page: " + course.getText())
+                        .as("На странице должен быть представлен последний курс: " + course.getText())
                         .isTrue());
         softly.assertAll();
     }
+
     @DisplayName("Сценарий 3")
     @Tags({
-            @Tag("Открыть главную страницу https://otus.ru"),
-            @Tag("В заголовке страницы открыть меню «Обучение» и выбрать случайную категорию курсов"),
-            @Tag("Проверить, что открыт каталог курсов верной категории")
+            @Tag("Regress"),
+            @Tag("Smoke"),
+            @Tag("UI"),
+            @Tag("Otus")
     })
     @Test
     public void selectedCourseVerification() {
@@ -91,7 +93,7 @@ public class HomeworkOneTest {
         headerComponent.hoverOnTrainingField();
         String courseName = trainingComponent.clickOnRandomCourseAndReturnName();
         assertThat(coursesPage.isCourseSelected(coursesPage.getOpenedCourseByName(courseName)))
-                .as("Course should be present in the page" + courseName)
+                .as("Курс должен присутствовать на странице" + courseName)
                 .isTrue();
     }
 }

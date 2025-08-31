@@ -16,7 +16,7 @@ public class HeaderComponent extends AbsBaseComponent {
     }
 
     public void hoverOnTrainingField() {
-        verifyComponentLoaded(); // can not check in constructor ,causes the issue in injection,during creating object element can not find
-        actionUtils.hoverOnElement(trainingField);// use Actions
+        verifyComponentLoaded();
+        actionUtils.hoverOnElement(trainingField);
     }
 }

@@ -3,6 +3,7 @@ package extensions;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import factory.WebDriverFactory;
+import lombok.extern.slf4j.Slf4j;
 import modules.GuiceComponentsModule;
 import modules.GuicePagesModule;
 import org.apache.commons.io.FileUtils;
@@ -18,7 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-public class UIExtension  implements BeforeEachCallback, AfterEachCallback {
+@Slf4j
+public class UIExtension implements BeforeEachCallback, AfterEachCallback {
 
     private static final ThreadLocal<WebDriver> DRIVER = new ThreadLocal<>();
 
@@ -37,14 +39,12 @@ public class UIExtension  implements BeforeEachCallback, AfterEachCallback {
             if (context.getExecutionException().isPresent()) {
                 Throwable throwable = context.getExecutionException().get();
 
-                // Логируем потенциально сломанный локатор
                 if (throwable instanceof NoSuchElementException || throwable instanceof IndexOutOfBoundsException) {
-                    System.err.println("❌ Элемент не найден или список пуст! Возможно сломан локатор: " + throwable.getMessage());
+                    log.error("❌ Элемент не найден или список пуст! Возможно сломан локатор: " + throwable.getMessage());
                 } else {
-                    System.err.println("❌ Тест упал с исключением: " + throwable);
+                    log.error("❌ Тест упал с исключением: " + throwable);
                 }
 
-                // Скриншот при любом падении
                 String testName = context.getDisplayName().replaceAll("[^a-zA-Z0-9.-]", "_");
                 takeScreenshot(webDriver, testName);
             }
@@ -56,20 +56,17 @@ public class UIExtension  implements BeforeEachCallback, AfterEachCallback {
 
     private void takeScreenshot(WebDriver driver, String testName) {
         try {
-            // Делаем скриншот
             File source = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 
-            // Папка для сохранения
             String screenshotDir = "./target/screenshots/";
             new File(screenshotDir).mkdirs();
 
-            // Имя файла: имя теста + timestamp
             String path = screenshotDir + testName + "_" + System.currentTimeMillis() + ".png";
 
             FileUtils.copyFile(source, new File(path));
-            System.out.println("✅ Screenshot saved to: " + path);
+            log.error("✅ Screenshot saved to: " + path);
         } catch (IOException e) {
-            System.err.println("❌ Failed to capture screenshot: " + e.getMessage());
+            log.error("❌ Failed to capture screenshot: " + e.getMessage());
         }
     }
 }

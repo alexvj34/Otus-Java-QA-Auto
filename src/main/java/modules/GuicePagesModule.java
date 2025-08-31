@@ -27,6 +27,7 @@ public class GuicePagesModule extends AbstractModule {
     public MainPage getMainPage() {
         return new MainPage(driver);
     }
+
     @Provides
     @Singleton
     public CoursesPage getCoursesPage() {
@@ -44,14 +45,4 @@ public class GuicePagesModule extends AbstractModule {
     public MouseListener getMouseListener() {
         return new MouseListener();
     }
-    //возможно лучше вместе MouseListener
-    //@Provides
-    //@Singleton
-    //public WebDriver getDriver(MouseListener listener) {
-    //    WebDriver baseDriver = new ChromeDriver();
-    //    return new EventFiringDecorator<>(listener).decorate(baseDriver);
-    //}
-    //Ты в GuicePagesModule возвращаешь MouseListener, но он сам по себе бесполезен, если драйвер не обёрнут в EventFiringDecorator.
-    //Обычно удобнее оборачивать драйвер прямо в модуле, где он создаётся:
-
 }

@@ -18,7 +18,7 @@ public class TrainingComponent extends AbsBaseComponent {
     }
 
     public String clickOnRandomCourseAndReturnName() {
-        verifyComponentLoaded(); // can not check in constructor ,causes the issue in injection,during creating object element can not find
+        verifyComponentLoaded();
         int index = (int) (Math.random() * courcesList.size());
         String name = getText(courcesList.get(index)).split(" \\(")[0];
         clickOnElement(courcesList.get(index));

@@ -7,8 +7,6 @@ import org.openqa.selenium.support.PageFactory;
 import utils.ActionUtils;
 import utils.WaitUtils;
 
-import javax.swing.*;
-
 public abstract class AbsCommon<T extends AbsCommon<T>> {
     protected ActionUtils actionUtils;
     protected WebDriver driver;
@@ -20,10 +18,9 @@ public abstract class AbsCommon<T extends AbsCommon<T>> {
         this.actionUtils = new ActionUtils(driver);
         PageFactory.initElements(driver, this);//реализациа фабрики
     }
-    @SuppressWarnings("unchecked")
-    protected T clickOnElement(WebElement element) {
+
+    protected void clickOnElement(WebElement element) {
         element.click();
-        return (T) this;
     }
 
     protected String getText(WebElement element) {

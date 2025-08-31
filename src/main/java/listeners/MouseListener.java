@@ -3,15 +3,8 @@ package listeners;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.events.EventFiringDecorator;
 import org.openqa.selenium.support.events.WebDriverListener;
-
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WrapsDriver;
-import org.openqa.selenium.support.events.WebDriverListener;
 
 public class MouseListener implements WebDriverListener {
 
@@ -24,7 +17,7 @@ public class MouseListener implements WebDriverListener {
     @Override
     public void afterClick(WebElement element) {
         WebDriver driver = ((WrapsDriver) element).getWrappedDriver();
-        highlight(element, driver, ""); // снимаем подсветку
+        highlight(element, driver, "");
     }
 
     private void highlight(WebElement element, WebDriver driver, String borderStyle) {

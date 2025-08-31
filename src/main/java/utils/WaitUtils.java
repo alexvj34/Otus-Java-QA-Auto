@@ -11,9 +11,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class WaitUtils {
-    WebDriver driver;
-    int duration = 20;
-    WebDriverWait wait;
+    private WebDriver driver;
+    private int duration = 20;
+    private WebDriverWait wait;
 
 
     public WaitUtils(WebDriver driver) {

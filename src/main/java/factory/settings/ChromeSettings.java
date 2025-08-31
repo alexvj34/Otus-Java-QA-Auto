@@ -1,11 +1,13 @@
 package factory.settings;
 
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.chrome.ChromeOptions;
 import utils.ConfigReader;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class ChromeSettings implements IBrowserSettings {
 
     @Override
@@ -19,7 +21,6 @@ public class ChromeSettings implements IBrowserSettings {
             options.addArguments("--headless=new");
         }
 
-        // Дополнительные аргументы
         String extraArgs = ConfigReader.get("browser.args");
         if (extraArgs != null && !extraArgs.isEmpty()) {
             for (String arg : extraArgs.split(",")) {
@@ -27,7 +28,6 @@ public class ChromeSettings implements IBrowserSettings {
             }
         }
 
-        // Selenoid options
         Map<String, Object> selenoidOptions = new HashMap<>();
         selenoidOptions.put("enableVNC", ConfigReader.getBoolean("browser.vnc"));
         selenoidOptions.put("enableVideo", ConfigReader.getBoolean("browser.video"));
@@ -39,10 +39,9 @@ public class ChromeSettings implements IBrowserSettings {
     }
 
     private void logOptions() {
-        System.out.println("[ChromeSettings] Headless = " + ConfigReader.getBoolean("browser.headless"));
-        System.out.println("[ChromeSettings] StartMaximized = " + ConfigReader.getBoolean("browser.startMaximized"));
-        System.out.println("[ChromeSettings] VNC = " + ConfigReader.getBoolean("browser.vnc"));
-        System.out.println("[ChromeSettings] Video = " + ConfigReader.getBoolean("browser.video"));
+        log.info("[ChromeSettings] Headless = " + ConfigReader.getBoolean("browser.headless"));
+        log.info("[ChromeSettings] StartMaximized = " + ConfigReader.getBoolean("browser.startMaximized"));
+        log.info("[ChromeSettings] VNC = " + ConfigReader.getBoolean("browser.vnc"));
+        log.info("[ChromeSettings] Video = " + ConfigReader.getBoolean("browser.video"));
     }
 }
-
