@@ -1,45 +1,48 @@
 package factory.settings;
 
 import org.openqa.selenium.chrome.ChromeOptions;
+import utils.ConfigReader;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ChromeSettings implements IBrowserSettings {
 
-    public ChromeOptions settingsAmd64() //getDefaultSettings()
-    // Переименовать метод settingsAmd64() во что-то более универсальное (getDefaultSettings() или build()), т.к. в нём нет ничего архитектурно специфичного под AMD64.
-    //Сделать возможность читать аргументы и capabilities из конфигурационного файла (.properties или YAML), чтобы не хардкодить.
-    //Добавить поддержку headless-режима через аргумент "--headless=new" для CI/CD.
-    {
+    @Override
+    public ChromeOptions getDefaultSettings() {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("start-maximized");
+
+        if (ConfigReader.getBoolean("browser.startMaximized")) {
+            options.addArguments("start-maximized");
+        }
+        if (ConfigReader.getBoolean("browser.headless")) {
+            options.addArguments("--headless=new");
+        }
+
+        // Дополнительные аргументы
+        String extraArgs = ConfigReader.get("browser.args");
+        if (extraArgs != null && !extraArgs.isEmpty()) {
+            for (String arg : extraArgs.split(",")) {
+                options.addArguments(arg.trim());
+            }
+        }
+
+        // Selenoid options
         Map<String, Object> selenoidOptions = new HashMap<>();
-        selenoidOptions.put("enableVNC", true);
+        selenoidOptions.put("enableVNC", ConfigReader.getBoolean("browser.vnc"));
+        selenoidOptions.put("enableVideo", ConfigReader.getBoolean("browser.video"));
         options.setCapability("selenoid:options", selenoidOptions);
+
+        logOptions();
+
         return options;
+    }
+
+    private void logOptions() {
+        System.out.println("[ChromeSettings] Headless = " + ConfigReader.getBoolean("browser.headless"));
+        System.out.println("[ChromeSettings] StartMaximized = " + ConfigReader.getBoolean("browser.startMaximized"));
+        System.out.println("[ChromeSettings] VNC = " + ConfigReader.getBoolean("browser.vnc"));
+        System.out.println("[ChromeSettings] Video = " + ConfigReader.getBoolean("browser.video"));
     }
 }
 
-
-
-
-//Сделаем так, чтобы оба класса реализовывали один и тот же интерфейс:
-//package factory.settings;
-//
-//import org.openqa.selenium.chrome.ChromeOptions;
-//
-//import java.util.HashMap;
-//import java.util.Map;
-//
-//public class ChromeSettings implements IBrowserSettings {
-//    @Override
-//    public ChromeOptions settingsAmd64() {
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("start-maximized");
-//        Map<String, Object> selenoidOptions = new HashMap<>();
-//        selenoidOptions.put("enableVNC", true);
-//        options.setCapability("selenoid:options", selenoidOptions);
-//        return options;
-//    }
-//}
