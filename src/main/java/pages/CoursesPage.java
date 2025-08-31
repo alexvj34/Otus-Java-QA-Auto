@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Path("/catalog/courses")
 public class CoursesPage extends AbsBasePage {
 
-    @FindBy(xpath = "//main//section[2]//aф")
+    @FindBy(xpath = "//main//section[2]//a")
     private List<WebElement> courseLinks;
 
     @FindBy(xpath = "//main//section[2]//div[2]//a//h6/div")
@@ -42,6 +42,11 @@ public class CoursesPage extends AbsBasePage {
 
     // Клик по курсу по имени
     public void clickOnCourseByName(String courseName) {
+        // Проверяем, что элементы есть
+        if (courseLinks.isEmpty() || coursesNames.isEmpty()) {
+            throw new RuntimeException("❌ Локатор не нашёл элементов! Проверьте @FindBy для courseLinks или coursesNames");
+        }
+
         // Нормализуем название для поиска
         String normalizedCourseName = courseName.trim().replaceAll("\\s+", " ").toLowerCase();
 
@@ -53,7 +58,7 @@ public class CoursesPage extends AbsBasePage {
             }
         }
 
-        throw new RuntimeException("Course not found: " + courseName);
+        throw new RuntimeException("❌ Курс не найден: " + courseName);
     }
 
     // Общий метод для поиска курсов по дате

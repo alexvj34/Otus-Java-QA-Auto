@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -35,9 +36,20 @@ public class UIExtension  implements BeforeEachCallback, AfterEachCallback {
         WebDriver webDriver = DRIVER.get();
         if (webDriver != null) {
             if (context.getExecutionException().isPresent()) {
+                Throwable throwable = context.getExecutionException().get();
+
+                // Логируем потенциально сломанный локатор
+                if (throwable instanceof NoSuchElementException || throwable instanceof IndexOutOfBoundsException) {
+                    System.err.println("❌ Элемент не найден или список пуст! Возможно сломан локатор: " + throwable.getMessage());
+                } else {
+                    System.err.println("❌ Тест упал с исключением: " + throwable);
+                }
+
+                // Скриншот при любом падении
                 String testName = context.getDisplayName().replaceAll("[^a-zA-Z0-9.-]", "_");
                 takeScreenshot(webDriver, testName);
             }
+
             webDriver.quit();
             DRIVER.remove();
         }
