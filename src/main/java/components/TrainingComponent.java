@@ -4,24 +4,23 @@ import annotations.Component;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
 import java.util.List;
 
 @Component("xpath://nav/div[3]/div")
 public class TrainingComponent extends AbsBaseComponent {
 
-    @FindBy(xpath = "//nav//div[3]//div//div//div[1]//div//div//a")
-    public List<WebElement> courcesList;
+  @FindBy(xpath = "//nav//div[3]//div//div//div[1]//div//div//a")
+  public List<WebElement> courcesList;
 
-    public TrainingComponent(WebDriver driver) {
-        super(driver);
-    }
+  public TrainingComponent(WebDriver driver) {
+    super(driver);
+  }
 
-    public String clickOnRandomCourseAndReturnName() {
-        verifyComponentLoaded();
-        int index = (int) (Math.random() * courcesList.size());
-        String name = getText(courcesList.get(index)).split(" \\(")[0];
-        clickOnElement(courcesList.get(index));
-        return name;
-    }
+  public String clickOnRandomCourseAndReturnName() {
+    verifyComponentLoaded();
+    int index = (int) (Math.random() * courcesList.size());
+    String name = getText(courcesList.get(index)).split(" \\(")[0];
+    clickOnElement(courcesList.get(index));
+    return name;
+  }
 }

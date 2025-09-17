@@ -8,21 +8,21 @@ import components.TrainingComponent;
 import org.openqa.selenium.WebDriver;
 
 public class GuiceComponentsModule extends AbstractModule {
-    private WebDriver driver;
+  private WebDriver driver;
 
-    public GuiceComponentsModule(WebDriver driver) {
-        this.driver = driver;
-    }
+  public GuiceComponentsModule(WebDriver driver) {
+    this.driver = driver;
+  }
 
-    @Provides
-    @Singleton
-    public HeaderComponent getHeaderComponent() {
-        return new HeaderComponent(driver);
-    }
+  @Provides
+  @Singleton
+  public HeaderComponent getHeaderComponent() {
+    return new HeaderComponent(driver);
+  }
 
-    @Provides
-    @Singleton
-    public TrainingComponent getTrainingComponent() {
-        return new TrainingComponent(driver);
-    }
+  @Provides
+  @Singleton
+  public TrainingComponent getTrainingComponent() {
+    return new TrainingComponent(driver);
+  }
 }

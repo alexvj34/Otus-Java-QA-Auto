@@ -9,7 +9,6 @@ import org.jsoup.nodes.Document;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,89 +19,89 @@ import java.util.stream.Collectors;
 @Path("/catalog/courses")
 public class CoursesPage extends AbsBasePage {
 
-    @FindBy(xpath = "//main//section[2]//a")
-    private List<WebElement> courseLinks;
+  @FindBy(xpath = "//main//section[2]//a")
+  private List<WebElement> courseLinks;
 
-    @FindBy(xpath = "//main//section[2]//div[2]//a//h6/div")
-    private List<WebElement> coursesNames;
+  @FindBy(xpath = "//main//section[2]//div[2]//a//h6/div")
+  private List<WebElement> coursesNames;
 
-    @FindBy(xpath = "//section[2]//a/div[2]/div/div")
-    private List<WebElement> coursesDates;
+  @FindBy(xpath = "//section[2]//a/div[2]/div/div")
+  private List<WebElement> coursesDates;
 
-    @FindBy(xpath = "//main//section[1]//div[1]//div[2]//div//div//div")
-    private List<WebElement> coursesList;
+  @FindBy(xpath = "//main//section[1]//div[1]//div[2]//div//div//div")
+  private List<WebElement> coursesList;
 
-    public CoursesPage(WebDriver driver) {
-        super(driver);
+  public CoursesPage(WebDriver driver) {
+    super(driver);
+  }
+
+  public String getRandomCourseName() {
+    int index = (int) (Math.random() * coursesNames.size());
+    return coursesNames.get(index).getText();
+  }
+
+  public void clickOnCourseByName(String courseName) {
+    // Проверяем, что элементы есть
+    if (courseLinks.isEmpty() || coursesNames.isEmpty()) {
+      throw new LocatorNotFoundException("courseLinks или coursesNames");
     }
 
-    public String getRandomCourseName() {
-        int index = (int) (Math.random() * coursesNames.size());
-        return coursesNames.get(index).getText();
+    String normalizedCourseName = courseName.trim().replaceAll("\\s+", " ").toLowerCase();
+
+    for (int i = 0; i < coursesNames.size(); i++) {
+      String currentName = coursesNames.get(i).getText().trim().replaceAll("\\s+", " ").toLowerCase();
+      if (currentName.equals(normalizedCourseName)) {
+        clickOnElement(courseLinks.get(i));
+        return;
+      }
     }
+    throw new CourseNotFoundException(courseName);
+  }
 
-    public void clickOnCourseByName(String courseName) {
-        // Проверяем, что элементы есть
-        if (courseLinks.isEmpty() || coursesNames.isEmpty()) {
-            throw new LocatorNotFoundException("courseLinks или coursesNames");
-        }
+  private List<WebElement> getCoursesByDate(boolean earliest) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM, yyyy", new Locale("ru"));
 
-        String normalizedCourseName = courseName.trim().replaceAll("\\s+", " ").toLowerCase();
+    Optional<LocalDate> targetDateOpt = coursesDates.stream()
+        .map(course -> {
+          String text = course.getText().trim().split("·")[0].trim();
+          return LocalDate.parse(text, formatter);
+        })
+        .reduce((d1, d2) -> earliest ? (d1.isBefore(d2) ? d1 : d2) : (d1.isAfter(d2) ? d1 : d2));
 
-        for (int i = 0; i < coursesNames.size(); i++) {
-            String currentName = coursesNames.get(i).getText().trim().replaceAll("\\s+", " ").toLowerCase();
-            if (currentName.equals(normalizedCourseName)) {
-                clickOnElement(courseLinks.get(i));
-                return;
-            }
-        }
-        throw new CourseNotFoundException(courseName);
+    if (targetDateOpt.isEmpty()) {
+      throw new LocatorNotFoundException("coursesDates");
     }
+    LocalDate targetDate = targetDateOpt.get();
 
-    private List<WebElement> getCoursesByDate(boolean earliest) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM, yyyy", new Locale("ru"));
+    return coursesDates.stream()
+        .filter(course -> {
+          String text = course.getText().trim().split("·")[0].trim();
+          return LocalDate.parse(text, formatter).equals(targetDate);
+        })
+        .collect(Collectors.toList());
+  }
 
-        Optional<LocalDate> targetDateOpt = coursesDates.stream()
-                .map(course -> {
-                    String text = course.getText().trim().split("·")[0].trim();
-                    return LocalDate.parse(text, formatter);
-                })
-                .reduce((d1, d2) -> earliest ? (d1.isBefore(d2) ? d1 : d2) : (d1.isAfter(d2) ? d1 : d2));
+  public List<WebElement> getEarliestCourses() {
+    return getCoursesByDate(true);
+  }
 
-        if (targetDateOpt.isEmpty()) {
-            throw new LocatorNotFoundException("coursesDates");
-        }
-        LocalDate targetDate = targetDateOpt.get();
+  public List<WebElement> getLatestCourses() {
+    return getCoursesByDate(false);
+  }
 
-        return coursesDates.stream()
-                .filter(course -> {
-                    String text = course.getText().trim().split("·")[0].trim();
-                    return LocalDate.parse(text, formatter).equals(targetDate);
-                })
-                .collect(Collectors.toList());
-    }
+  public boolean isCourseModelInPage(WebElement courseDate) {
+    Document doc = Jsoup.parse(driver.getPageSource());
+    return doc.selectFirst(String.format("div:contains(%s)", courseDate.getText().trim())) != null;
+  }
 
-    public List<WebElement> getEarliestCourses() {
-        return getCoursesByDate(true);
-    }
+  public WebElement getOpenedCourseByName(String courseName) {
+    return coursesList.stream()
+        .filter(course -> course.getText().equalsIgnoreCase(courseName))
+        .findFirst()
+        .orElseThrow(() -> new OpenedCourseNotFoundException(courseName));
+  }
 
-    public List<WebElement> getLatestCourses() {
-        return getCoursesByDate(false);
-    }
-
-    public boolean isCourseModelInPage(WebElement courseDate) {
-        Document doc = Jsoup.parse(driver.getPageSource());
-        return doc.selectFirst(String.format("div:contains(%s)", courseDate.getText().trim())) != null;
-    }
-
-    public WebElement getOpenedCourseByName(String courseName) {
-        return coursesList.stream()
-                .filter(course -> course.getText().equalsIgnoreCase(courseName))
-                .findFirst()
-                .orElseThrow(() -> new OpenedCourseNotFoundException(courseName));
-    }
-
-    public boolean isCourseSelected(WebElement webElement) {
-        return "true".equals(getElementAttribute(webElement, "value"));
-    }
+  public boolean isCourseSelected(WebElement webElement) {
+    return "true".equals(getElementAttribute(webElement, "value"));
+  }
 }

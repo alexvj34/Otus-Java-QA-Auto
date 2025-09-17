@@ -11,38 +11,38 @@ import pages.MainPage;
 
 public class GuicePagesModule extends AbstractModule {
 
-    private WebDriver driver;
+  private WebDriver driver;
 
-    public GuicePagesModule(WebDriver driver) {
-        this.driver = driver;
-    }
+  public GuicePagesModule(WebDriver driver) {
+    this.driver = driver;
+  }
 
-    @Provides
-    public WebDriver getDriver() {
-        return driver;
-    }
+  @Provides
+  public WebDriver getDriver() {
+    return driver;
+  }
 
-    @Provides
-    @Singleton
-    public MainPage getMainPage() {
-        return new MainPage(driver);
-    }
+  @Provides
+  @Singleton
+  public MainPage getMainPage() {
+    return new MainPage(driver);
+  }
 
-    @Provides
-    @Singleton
-    public CoursesPage getCoursesPage() {
-        return new CoursesPage(driver);
-    }
+  @Provides
+  @Singleton
+  public CoursesPage getCoursesPage() {
+    return new CoursesPage(driver);
+  }
 
-    @Provides
-    @Singleton
-    public CoursePage getCoursePage() {
-        return new CoursePage(driver);
-    }
+  @Provides
+  @Singleton
+  public CoursePage getCoursePage() {
+    return new CoursePage(driver);
+  }
 
-    @Provides
-    @Singleton
-    public MouseListener getMouseListener() {
-        return new MouseListener();
-    }
+  @Provides
+  @Singleton
+  public MouseListener getMouseListener() {
+    return new MouseListener();
+  }
 }

@@ -8,20 +8,20 @@ import utils.AnnotationUtils;
 
 public abstract class AbsBaseComponent extends AbsCommon {
 
-    public AbsBaseComponent(WebDriver driver) {
-        super(driver);
-    }
+  public AbsBaseComponent(WebDriver driver) {
+    super(driver);
+  }
 
-    public void verifyComponentLoaded() {
-        waitUtils.waitTillElementVisible(getComponentSelector());
-    }
+  public void verifyComponentLoaded() {
+    waitUtils.waitTillElementVisible(getComponentSelector());
+  }
 
-    public By getComponentSelector() {
-        String[] selector = new AnnotationUtils().getAnnotationInstance(this.getClass(), Component.class).value().split(":");
-        return switch (selector[0].trim()) {
-            case "css" -> By.cssSelector(selector[1].trim());
-            case "xpath" -> By.xpath(selector[1].trim());
-            default -> null;
-        };
-    }
+  public By getComponentSelector() {
+    String[] selector = new AnnotationUtils().getAnnotationInstance(this.getClass(), Component.class).value().split(":");
+    return switch (selector[0].trim()) {
+      case "css" -> By.cssSelector(selector[1].trim());
+      case "xpath" -> By.xpath(selector[1].trim());
+      default -> null;
+    };
+  }
 }

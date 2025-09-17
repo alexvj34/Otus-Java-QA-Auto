@@ -8,14 +8,14 @@ import org.openqa.selenium.support.FindBy;
 @Path("/")
 public class CoursePage extends AbsBasePage {
 
-    @FindBy(xpath = "//main//h1")
-    WebElement courseTitle;
+  @FindBy(xpath = "//main//h1")
+  WebElement courseTitle;
 
-    public CoursePage(WebDriver driver) {
-        super(driver);
-    }
+  public CoursePage(WebDriver driver) {
+    super(driver);
+  }
 
-    public boolean isSelectedCoursePageOpened(String courseName) {
-        return getText(courseTitle).contains(courseName);
-    }
+  public boolean isSelectedCoursePageOpened(String courseName) {
+    return getText(courseTitle).contains(courseName);
+  }
 }
