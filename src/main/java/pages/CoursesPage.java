@@ -1,6 +1,7 @@
 package pages;
 
 import annotations.Path;
+import com.google.inject.Inject;
 import exceptions.CourseNotFoundException;
 import exceptions.LocatorNotFoundException;
 import exceptions.OpenedCourseNotFoundException;
@@ -26,7 +27,7 @@ public class CoursesPage extends AbsBasePage {
   private List<WebElement> coursesNames;
 
   @FindBy(xpath = "//section[2]//a/div[2]/div/div")
-  private List<WebElement> coursesDates;
+  public List<WebElement> coursesDates;
 
   @FindBy(xpath = "//main//section[1]//div[1]//div[2]//div//div//div")
   private List<WebElement> coursesList;

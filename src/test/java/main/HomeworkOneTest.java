@@ -1,6 +1,7 @@
 package main;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.inject.Inject;
 import components.HeaderComponent;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebElement;
+import org.xml.sax.Locator;
 import pages.CoursePage;
 import pages.CoursesPage;
 import pages.MainPage;
