@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+/*
 @Slf4j
 public class UIExtension implements BeforeEachCallback, AfterEachCallback {
 
@@ -68,4 +69,4 @@ public class UIExtension implements BeforeEachCallback, AfterEachCallback {
       log.error("❌ Failed to capture screenshot: " + e.getMessage());
     }
   }
-}
+}*/

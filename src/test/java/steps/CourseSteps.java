@@ -38,7 +38,7 @@ public class CourseSteps {
 
   @И("Я открываю страницу Курсы")
   public void openCoursesPage() {
-    Hooks.injector.injectMembers(this);
+    //Hooks.injector.injectMembers(this);
     coursesPage.openPage();
   }
 
@@ -75,7 +75,7 @@ public class CourseSteps {
 
   @Когда("Я перехожу в Подготовительные курсы")
   public void openPrepCourses() {
-    Hooks.injector.injectMembers(this);
+    //Hooks.injector.injectMembers(this);
     headerComponent.hoverOnTrainingField();
     trainingComponent.openPrepCourses();
   }

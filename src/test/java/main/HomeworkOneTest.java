@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.google.inject.Inject;
 import components.HeaderComponent;
 import components.TrainingComponent;
-import extensions.UIExtension;
+//import extensions.UIExtension;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -20,7 +20,7 @@ import pages.CoursesPage;
 import pages.MainPage;
 import java.util.List;
 
-@ExtendWith(UIExtension.class)
+//@ExtendWith(UIExtension.class)
 public class HomeworkOneTest {
 
   SoftAssertions softly = new SoftAssertions();
