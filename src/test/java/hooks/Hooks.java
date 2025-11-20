@@ -21,7 +21,6 @@ public class Hooks {
         new GuiceComponentsModule(driver)
     );
   }
-
   @After
   public void tearDown() {
     if (driver != null) {

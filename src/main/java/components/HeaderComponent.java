@@ -15,10 +15,12 @@ public class HeaderComponent extends AbsBaseComponent {
   @FindBy(xpath = "//header//a[contains(text(),'Курсы')]")
   private WebElement trainingMenu;
 
+  @Inject
   public HeaderComponent(WebDriver driver) {
     super(driver);
   }
 
+  @Inject
   public void hoverOnTrainingField() {
     verifyComponentLoaded();
     actionUtils.hoverOnElement(trainingField);

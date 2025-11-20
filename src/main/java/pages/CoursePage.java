@@ -12,6 +12,7 @@ public class CoursePage extends AbsBasePage {
   @FindBy(xpath = "//main//h1")
   WebElement courseTitle;
 
+  @Inject
   public CoursePage(WebDriver driver) {
     super(driver);
   }

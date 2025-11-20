@@ -32,6 +32,7 @@ public class CoursesPage extends AbsBasePage {
   @FindBy(xpath = "//main//section[1]//div[1]//div[2]//div//div//div")
   private List<WebElement> coursesList;
 
+  @Inject
   public CoursesPage(WebDriver driver) {
     super(driver);
   }
