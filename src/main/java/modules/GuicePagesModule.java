@@ -2,7 +2,6 @@ package modules;
 
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import factory.WebDriverFactory;
@@ -48,7 +47,6 @@ public class GuicePagesModule extends AbstractModule {
     return new MouseListener();
   }
 
-  // Используем com.google.inject.Provider вместо javax.inject.Provider
   public static class WebDriverProvider implements Provider<WebDriver> {
 
     private final GuiceScoped guiceScoped;
@@ -72,71 +70,4 @@ public class GuicePagesModule extends AbstractModule {
       return guiceScoped.driver;
     }
   }
-
-/*
-
-  private WebDriver driver;
-
-  public GuicePagesModule(WebDriver driver) {
-    this.driver = driver;
-  }
-
-  @Override
-  protected void configure() {
-    // Биндим WebDriver как провайдер
-    bind(WebDriver.class).toProvider(WebDriverProvider.class).in(Singleton.class);
-  }
-
-
-  @Provides
-  public WebDriver getDriver() {
-    return driver;
-  }
-
-  @Provides
-  @Singleton
-  public MainPage getMainPage() {
-    return new MainPage(driver);
-  }
-
-  @Provides
-  @Singleton
-  public CoursesPage getCoursesPage() {
-    return new CoursesPage(driver);
-  }
-
-  @Provides
-  @Singleton
-  public CoursePage getCoursePage() {
-    return new CoursePage(driver);
-  }
-
-  @Provides
-  @Singleton
-  public MouseListener getMouseListener() {
-    return new MouseListener();
-  }
-
-  // Провайдер для WebDriver
-  public static class WebDriverProvider implements javax.inject.Provider<WebDriver> {
-    @Inject
-    private GuiceScoped guiceScoped;
-
-    @Inject
-    private WebDriverFactory driverFactory;
-
-    @Override
-    public WebDriver get() {
-      if (guiceScoped.driver == null) {
-        try {
-          guiceScoped.driver = driverFactory.create();
-        } catch (MalformedURLException e) {
-          throw new RuntimeException(e);
-        }
-      }
-      return guiceScoped.driver;
-    }
-  }
-*/
-
 }

@@ -3,7 +3,6 @@ package steps;
 import com.google.inject.Inject;
 import components.HeaderComponent;
 import components.TrainingComponent;
-import hooks.Hooks;
 import io.cucumber.java.ru.Дано;
 import io.cucumber.java.ru.И;
 import io.cucumber.java.ru.Когда;
@@ -22,13 +21,18 @@ import java.util.Locale;
 
 public class CourseSteps {
 
-  @Inject private CoursesPage coursesPage;
-  @Inject private CoursePage coursePage;
+  @Inject
+  private CoursesPage coursesPage;
+  @Inject
+  private CoursePage coursePage;
 
-  @Inject private HeaderComponent headerComponent;
-  @Inject private TrainingComponent trainingComponent;
+  @Inject
+  private HeaderComponent headerComponent;
+  @Inject
+  private TrainingComponent trainingComponent;
 
-  @Inject private CoursesPreparePage coursesPreparePage; // <-- добавили подготовительные курсы
+  @Inject
+  private CoursesPreparePage coursesPreparePage; // <-- добавили подготовительные курсы
   private List<WebElement> filtered;
 
   @Дано("Я открываю браузер {string}")

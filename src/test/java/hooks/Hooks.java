@@ -1,14 +1,8 @@
 package hooks;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
-import factory.WebDriverFactory;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import modules.GuiceComponentsModule;
-import modules.GuicePagesModule;
-import org.openqa.selenium.WebDriver;
 import support.GuiceScoped;
 
 public class Hooks {
