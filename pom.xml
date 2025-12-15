@@ -29,6 +29,8 @@
     <commons-io.version>2.16.1</commons-io.version>
     <webdrivermanager.version>5.8.0</webdrivermanager.version>
     <javax.inject.version>1</javax.inject.version>
+    <spotbugs-maven-plugin.version>4.8.2.0</spotbugs-maven-plugin.version>
+    <spotbugs.version>4.8.3</spotbugs.version>
   </properties>
 
   <dependencies>
@@ -174,8 +176,6 @@
           </includes>
         </configuration>
       </plugin>
-
-      <!-- Удалите дублирующийся checkstyle plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -193,6 +193,18 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${spotbugs-maven-plugin.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs</artifactId>
+            <version>${spotbugs.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
