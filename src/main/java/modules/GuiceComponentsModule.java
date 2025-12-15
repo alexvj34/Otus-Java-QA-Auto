@@ -14,15 +14,20 @@ public class GuiceComponentsModule extends AbstractModule {
     this.driver = driver;
   }
 
+  @Override
+  protected void configure() {
+    // Конфигурация бинов
+  }
+
   @Provides
   @Singleton
-  public HeaderComponent getHeaderComponent() {
+  public HeaderComponent getHeaderComponent(WebDriver driver) {
     return new HeaderComponent(driver);
   }
 
   @Provides
   @Singleton
-  public TrainingComponent getTrainingComponent() {
+  public TrainingComponent getTrainingComponent(WebDriver driver) {
     return new TrainingComponent(driver);
   }
 }

@@ -9,5 +9,4 @@ public class MainPage extends AbsBasePage {
   public MainPage(WebDriver driver) {
     super(driver);
   }
-
 }

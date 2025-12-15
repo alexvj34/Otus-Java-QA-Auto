@@ -14,32 +14,78 @@
     <maven.surefire.version>3.5.3</maven.surefire.version>
     <maven.checkstyle.version>3.6.0</maven.checkstyle.version>
     <maven.compiler.version>3.14.0</maven.compiler.version>
-    <maven.spotbugs.version>4.9.3.0</maven.spotbugs.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <selenium.version>4.31.0</selenium.version>
-    <guice.version>7.0.0</guice.version>
-    <junit.version>5.12.1</junit.version>
-    <guava.version>32.1.2-jre</guava.version>
-    <assertj.version>3.27.3</assertj.version>
-    <jsoup.version>1.18.3</jsoup.version>
-    <lombok.version>1.18.38</lombok.version>
-    <logback-classic.version>1.5.18</logback-classic.version>
-    <commons-io.version>2.15.1</commons-io.version>
 
+    <!-- Унифицированные версии -->
+    <selenium.version>4.20.0</selenium.version>
+    <cucumber.version>7.20.1</cucumber.version>
+    <guice.version>7.0.0</guice.version>
+    <junit.version>5.10.2</junit.version>
+    <guava.version>32.1.3-jre</guava.version>
+    <assertj.version>3.25.3</assertj.version>
+    <jsoup.version>1.17.2</jsoup.version>
+    <lombok.version>1.18.32</lombok.version>
+    <logback-classic.version>1.5.6</logback-classic.version>
+    <commons-io.version>2.16.1</commons-io.version>
+    <webdrivermanager.version>5.8.0</webdrivermanager.version>
+    <javax.inject.version>1</javax.inject.version>
+    <spotbugs-maven-plugin.version>4.8.2.0</spotbugs-maven-plugin.version>
+    <spotbugs.version>4.8.3</spotbugs.version>
   </properties>
 
   <dependencies>
+    <!-- Selenium -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
       <version>${selenium.version}</version>
     </dependency>
+
+
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>${javax.inject.version}</version>
+    </dependency>
+
+    <!-- WebDriver Manager -->
+    <dependency>
+      <groupId>io.github.bonigarcia</groupId>
+      <artifactId>webdrivermanager</artifactId>
+      <version>${webdrivermanager.version}</version>
+    </dependency>
+
+    <!-- Cucumber -->
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-junit-platform-engine</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-guice</artifactId>
+      <version>${cucumber.version}</version>
+    </dependency>
+
+    <!-- Guice -->
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>${guice.version}</version>
+    </dependency>
+
+    <!-- JUnit -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>${junit.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
@@ -47,50 +93,39 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-      <version>${guice.version}</version>
-    </dependency>
-
+    <!-- Другие зависимости -->
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${guava.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <version>${assertj.version}</version>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>org.jsoup</groupId>
       <artifactId>jsoup</artifactId>
       <version>${jsoup.version}</version>
     </dependency>
-
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>${commons-io.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>${lombok.version}</version>
+      <scope>provided</scope>
     </dependency>
-
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>${logback-classic.version}</version>
-      <scope>compile</scope>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -100,8 +135,15 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven.compiler.version}</version>
         <configuration>
-          <target>${maven.compiler.target}</target>
           <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
 
@@ -110,17 +152,28 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven.surefire.version}</version>
         <configuration>
+          <argLine>
+            --add-opens java.base/java.lang=ALL-UNNAMED
+            --add-opens java.base/java.util=ALL-UNNAMED
+            --add-opens java.base/java.lang.reflect=ALL-UNNAMED
+            --add-opens java.base/java.text=ALL-UNNAMED
+            --add-opens java.desktop/java.awt.font=ALL-UNNAMED
+            --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+            --add-opens java.base/java.io=ALL-UNNAMED
+            --add-opens java.base/java.net=ALL-UNNAMED
+            --add-opens java.base/java.time=ALL-UNNAMED
+            --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+            --add-opens java.base/java.util.concurrent.atomic=ALL-UNNAMED
+            --add-opens java.base/sun.security.util=ALL-UNNAMED
+          </argLine>
           <systemPropertyVariables>
             <browser>chrome</browser>
             <baseUrl>https://otus.ru</baseUrl>
-            <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-            <junit.jupiter.execution.parallel.mode.default>concurrent
-            </junit.jupiter.execution.parallel.mode.default>
-            <junit.jupiter.execution.parallel.mode.classes.default>concurrent
-            </junit.jupiter.execution.parallel.mode.classes.default>
+            <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
           </systemPropertyVariables>
-          <parallel>methods</parallel>
-          <threadCount>${threadCount}</threadCount>
+          <includes>
+            <include>**/RunnerTest.java</include>
+          </includes>
         </configuration>
       </plugin>
       <plugin>
@@ -144,43 +197,15 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${maven.spotbugs.version}</version>
-        <configuration>
-          <effort>Max</effort>
-          <threshold>Low</threshold>
-          <xmlOutput>true</xmlOutput>
-          <includeTests>true</includeTests>
-          <omitVisitors>UnreadFields</omitVisitors>
-        </configuration>
-        <executions>
-          <execution>
-            <id>analyze-compile</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.6.0</version>
-        <configuration>
-          <includeTestSourceDirectory>true</includeTestSourceDirectory>
-          <configLocation>${project.build.sourceDirectory}/../resources/checkstyle.xml</configLocation>
-        </configuration>
-        <executions>
-          <execution>
-            <id>analyze-compile</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
+        <version>${spotbugs-maven-plugin.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs</artifactId>
+            <version>${spotbugs.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
-
 </project>

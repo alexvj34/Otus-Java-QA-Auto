@@ -1,24 +1,22 @@
 package main;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.inject.Inject;
 import components.HeaderComponent;
 import components.TrainingComponent;
-import extensions.UIExtension;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebElement;
 import pages.CoursePage;
 import pages.CoursesPage;
 import pages.MainPage;
+
 import java.util.List;
 
-@ExtendWith(UIExtension.class)
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class HomeworkOneTest {
 
   SoftAssertions softly = new SoftAssertions();

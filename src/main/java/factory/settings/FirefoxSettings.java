@@ -1,6 +1,7 @@
 package factory.settings;
 
 import org.openqa.selenium.firefox.FirefoxOptions;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,5 +16,4 @@ public class FirefoxSettings {
     options.setCapability("selenoid:options", selenoidOptions);
     return options;
   }
-
 }

@@ -12,6 +12,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringDecorator;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -51,5 +52,4 @@ public class WebDriverFactory {
         throw new BrowserNotSupportedException(browserName);
     }
   }
-
 }
